@@ -1,23 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useRef } from "react";
+import { Link, Routes, Route } from "react-router-dom";
+import "./App.css";
+import { Anterior } from "./pages/Anterior";
+import { Proximo } from "./pages/Proximo";
 
 function App() {
+  const anteriorRef = useRef(null);
+  const proximoRef = useRef(null);
+
+  const anteriorButtonClick = () => {
+    anteriorRef.current.style.pointerEvents = "none";
+    proximoRef.current.style.pointerEvents = "auto";
+  };
+
+  const proximoButtonClick = () => {
+    proximoRef.current.style.pointerEvents = "none";
+    anteriorRef.current.style.pointerEvents = "auto";
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+      <nav>
+        <Link
+          to="/"
+          ref={anteriorRef}
+          onClick={anteriorButtonClick}
+          style={{ pointerEvents: "none" }}
         >
-          Learn React
-        </a>
-      </header>
+          Anterior
+        </Link>{" "}
+        <Link to="/proximo" ref={proximoRef} onClick={proximoButtonClick}>
+          Próximo
+        </Link>
+      </nav>
+      <h1>Welcome to React Router!</h1>
+      <Routes>
+        <Route path="/" element={<Anterior />} />
+        <Route path="proximo" element={<Proximo />}>
+          <Route path=":aboutID" element={<Proximo />} />
+        </Route>
+      </Routes>
     </div>
   );
 }
